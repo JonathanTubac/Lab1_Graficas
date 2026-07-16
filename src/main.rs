@@ -5,8 +5,6 @@ mod polygon;
 
 use raylib::prelude::*;
 use framebuffer::Framebuffer;
-use point::point;
-use line::line;
 use polygon::{polygon, fill_polygon};
 
 fn main() {
@@ -18,30 +16,23 @@ fn main() {
     framebuffer.set_background_color(bg);
     framebuffer.clear();
 
-    // draw a dot
-    framebuffer.set_current_color(Color::WHITE);
-    point(&mut framebuffer, Vector2::new(400.0, 250.0));
-
-    // draw a line
-    framebuffer.set_current_color(Color::new(255, 220, 0, 255));
-    line(
-        &mut framebuffer,
-        Vector2::new(100.0, 100.0),
-        Vector2::new(700.0, 400.0),
-    );
-
-    // draw a filled polygon with its outline on top
-    let vertices: &[Vector2] = &[
-        Vector2::new(300.0, 150.0),
-        Vector2::new(500.0, 150.0),
-        Vector2::new(560.0, 300.0),
-        Vector2::new(400.0, 400.0),
-        Vector2::new(240.0, 300.0),
+    // Polygon 1
+    let p1: &[Vector2] = &[
+        Vector2::new(165.0, 380.0),
+        Vector2::new(185.0, 360.0),
+        Vector2::new(180.0, 330.0),
+        Vector2::new(207.0, 345.0),
+        Vector2::new(233.0, 330.0),
+        Vector2::new(230.0, 360.0),
+        Vector2::new(250.0, 380.0),
+        Vector2::new(220.0, 385.0),
+        Vector2::new(205.0, 410.0),
+        Vector2::new(193.0, 383.0),
     ];
-    framebuffer.set_current_color(Color::new(0, 200, 120, 255));
-    fill_polygon(&mut framebuffer, vertices);
+    framebuffer.set_current_color(Color::new(255, 220, 0, 255));
+    fill_polygon(&mut framebuffer, p1);
     framebuffer.set_current_color(Color::WHITE);
-    polygon(&mut framebuffer, vertices);
+    polygon(&mut framebuffer, p1);
 
     framebuffer.render_to_png("out.png");
 
