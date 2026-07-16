@@ -67,8 +67,10 @@ impl Framebuffer {
         buf.extend_from_slice(&0u32.to_le_bytes());
         buf.extend_from_slice(&0u32.to_le_bytes());
 
-        // Pixel data (de abajo hacia arriba, orden BGR)
-        for row in (0..h).rev() {
+        // Pixel data (orden BGR). Un BMP de altura positiva ya se almacena
+        // bottom-up, así que la primera fila escrita es la de abajo: recorrer
+        // las filas en orden directo deja y=0 abajo, igual que render_to_png.
+        for row in 0..h {
             let mut written = 0u32;
             for col in 0..w {
                 let c = self.pixels[row as usize * self.width + col as usize];
