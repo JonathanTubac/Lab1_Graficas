@@ -1,11 +1,13 @@
 mod framebuffer;
 mod point;
 mod line;
+mod polygon;
 
 use raylib::prelude::*;
 use framebuffer::Framebuffer;
 use point::point;
 use line::line;
+use polygon::polygon;
 
 fn main() {
     let width = 800;
@@ -27,6 +29,17 @@ fn main() {
         Vector2::new(100.0, 100.0),
         Vector2::new(700.0, 400.0),
     );
+
+    // draw a polygon
+    framebuffer.set_current_color(Color::new(0, 200, 120, 255));
+    let vertices: &[Vector2] = &[
+        Vector2::new(300.0, 150.0),
+        Vector2::new(500.0, 150.0),
+        Vector2::new(560.0, 300.0),
+        Vector2::new(400.0, 400.0),
+        Vector2::new(240.0, 300.0),
+    ];
+    polygon(&mut framebuffer, vertices);
 
     framebuffer.render_to_png("out.png");
 
