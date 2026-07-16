@@ -1,7 +1,9 @@
 mod framebuffer;
+mod point;
 
 use raylib::prelude::*;
 use framebuffer::Framebuffer;
+use point::point;
 
 fn main() {
     let width = 800;
@@ -12,7 +14,11 @@ fn main() {
     framebuffer.set_background_color(bg);
     framebuffer.clear();
 
+    // draw a dot
+    framebuffer.set_current_color(Color::WHITE);
+    point(&mut framebuffer, Vector2::new(400.0, 250.0));
+
     framebuffer.render_to_png("out.png");
 
-    println!("Hello, world!");
+    println!("Puntos dibujados en out.png");
 }
