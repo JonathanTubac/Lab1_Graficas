@@ -16,23 +16,17 @@ fn main() {
     framebuffer.set_background_color(bg);
     framebuffer.clear();
 
-    // Polygon 1
-    let p1: &[Vector2] = &[
-        Vector2::new(165.0, 380.0),
-        Vector2::new(185.0, 360.0),
-        Vector2::new(180.0, 330.0),
-        Vector2::new(207.0, 345.0),
-        Vector2::new(233.0, 330.0),
-        Vector2::new(230.0, 360.0),
-        Vector2::new(250.0, 380.0),
-        Vector2::new(220.0, 385.0),
-        Vector2::new(205.0, 410.0),
-        Vector2::new(193.0, 383.0),
+    // Polygon 2
+    let p2: &[Vector2] = &[
+        Vector2::new(321.0, 335.0),
+        Vector2::new(288.0, 286.0),
+        Vector2::new(339.0, 251.0),
+        Vector2::new(374.0, 302.0),
     ];
-    framebuffer.set_current_color(Color::new(255, 220, 0, 255));
-    fill_polygon(&mut framebuffer, p1);
+    framebuffer.set_current_color(Color::new(0, 120, 255, 255));
+    fill_polygon(&mut framebuffer, p2);
     framebuffer.set_current_color(Color::WHITE);
-    polygon(&mut framebuffer, p1);
+    polygon(&mut framebuffer, p2);
 
     framebuffer.render_to_png("out.png");
 
