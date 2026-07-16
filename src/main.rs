@@ -16,6 +16,47 @@ fn main() {
     framebuffer.set_background_color(bg);
     framebuffer.clear();
 
+    // Polygon 1
+    let p1: &[Vector2] = &[
+        Vector2::new(165.0, 380.0),
+        Vector2::new(185.0, 360.0),
+        Vector2::new(180.0, 330.0),
+        Vector2::new(207.0, 345.0),
+        Vector2::new(233.0, 330.0),
+        Vector2::new(230.0, 360.0),
+        Vector2::new(250.0, 380.0),
+        Vector2::new(220.0, 385.0),
+        Vector2::new(205.0, 410.0),
+        Vector2::new(193.0, 383.0),
+    ];
+    framebuffer.set_current_color(Color::new(255, 220, 0, 255));
+    fill_polygon(&mut framebuffer, p1);
+    framebuffer.set_current_color(Color::WHITE);
+    polygon(&mut framebuffer, p1);
+
+    // Polygon 2
+    let p2: &[Vector2] = &[
+        Vector2::new(321.0, 335.0),
+        Vector2::new(288.0, 286.0),
+        Vector2::new(339.0, 251.0),
+        Vector2::new(374.0, 302.0),
+    ];
+    framebuffer.set_current_color(Color::new(0, 120, 255, 255));
+    fill_polygon(&mut framebuffer, p2);
+    framebuffer.set_current_color(Color::WHITE);
+    polygon(&mut framebuffer, p2);
+
+    // Polygon 3
+    let p3: &[Vector2] = &[
+        Vector2::new(377.0, 249.0),
+        Vector2::new(411.0, 197.0),
+        Vector2::new(436.0, 249.0),
+    ];
+    framebuffer.set_current_color(Color::new(255, 60, 60, 255));
+    fill_polygon(&mut framebuffer, p3);
+    framebuffer.set_current_color(Color::WHITE);
+    polygon(&mut framebuffer, p3);
+
     // Polygon 4
     let p4: &[Vector2] = &[
         Vector2::new(413.0, 177.0),
@@ -55,7 +96,8 @@ fn main() {
     polygon(&mut framebuffer, p4);
     polygon(&mut framebuffer, p5);
 
+    framebuffer.render_to_file("out.bmp");
     framebuffer.render_to_png("out.png");
 
-    println!("Puntos dibujados en out.png");
+    println!("Poligonos dibujados en out.bmp y out.png");
 }
