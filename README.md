@@ -1,53 +1,53 @@
-# Lab 1 — Gráficas por Computadora
+# Lab 1 — Computer Graphics
 
-Rasterizador básico escrito en Rust, sin usar las funciones de dibujo de ninguna
-librería gráfica. Todo se dibuja pixel por pixel sobre un framebuffer propio y se
-exporta a imagen.
+A basic rasterizer written in Rust, without using the drawing functions of any
+graphics library. Everything is drawn pixel by pixel into a custom framebuffer
+and exported to an image file.
 
-![Resultado](out.png)
+![Result](out.png)
 
-## Qué hace
+## What it does
 
-Implementa desde cero la cadena completa de primitivas de dibujo, cada una
-construida sobre la anterior:
+Implements the full chain of drawing primitives from scratch, each one built on
+top of the previous:
 
-| Primitiva | Implementación |
+| Primitive | Implementation |
 |---|---|
-| **Punto** | Escribe un pixel directo en el framebuffer |
-| **Línea** | Algoritmo de **Bresenham** (solo enteros, sin flotantes en el bucle) |
-| **Polígono** | Contorno cerrado: una línea entre cada par de vértices consecutivos |
-| **Relleno** | Algoritmo de **scanline** con intersecciones ordenadas por pares |
+| **Point** | Writes a pixel directly into the framebuffer |
+| **Line** | **Bresenham's** algorithm (integer only, no floats inside the loop) |
+| **Polygon** | Closed outline: a line between each pair of consecutive vertices |
+| **Fill** | **Scanline** algorithm, filling between sorted pairs of intersections |
 
-El dibujo final tiene 5 polígonos: una estrella, un rombo, un triángulo y una
-tetera. El **polígono 5 es un agujero** dentro de la tetera — se logra
-rellenándolo con el color de fondo, y trazando los contornos *después* de todos
-los rellenos para que el agujero no borre el borde del polígono 4.
+The final drawing has 5 polygons: a star, a diamond, a triangle and a teapot.
+**Polygon 5 is a hole** inside the teapot — it is drawn by filling it with the
+background color, and the outlines are traced *after* every fill so the hole
+does not erase the border of polygon 4.
 
-## Estructura
+## Structure
 
 ```
 src/
-├── main.rs          Define los 5 polígonos y arma la escena
-├── framebuffer.rs   Buffer de pixeles + exportadores a BMP y PNG
+├── main.rs          Defines the 5 polygons and composes the scene
+├── framebuffer.rs   Pixel buffer + BMP and PNG exporters
 ├── point.rs         point()  -> set_pixel
 ├── line.rs          line()   -> point()
-└── polygon.rs       polygon() y fill_polygon() -> line()
+└── polygon.rs       polygon() and fill_polygon() -> line()
 ```
 
-Salidas: `out.bmp` y `out.png` (misma imagen, 800x500).
+Outputs: `out.bmp` and `out.png` (same image, 800x500).
 
-> El eje Y crece hacia arriba: `y = 0` es la fila de abajo (coordenadas
-> matemáticas). El exportador PNG invierte la Y explícitamente; el BMP no lo
-> necesita porque el formato ya almacena las filas de abajo hacia arriba.
+> The Y axis grows upwards: `y = 0` is the bottom row (math-style coordinates).
+> The PNG exporter flips Y explicitly; the BMP one does not need to, since the
+> format already stores its rows bottom-up.
 
-## Requisitos
+## Requirements
 
-- **Rust 1.85+** (el proyecto usa edition 2024)
-- **CMake** — `raylib-sys` compila raylib desde código C
-- **Compilador C/C++** — MSVC Build Tools en Windows
-- **LLVM / libclang** — lo necesita `bindgen` para generar los bindings de raylib
+- **Rust 1.85+** (the project uses edition 2024)
+- **CMake** — `raylib-sys` builds raylib from C source
+- **A C/C++ compiler** — MSVC Build Tools on Windows
+- **LLVM / libclang** — required by `bindgen` to generate the raylib bindings
 
-En Windows, con [winget](https://learn.microsoft.com/windows/package-manager/):
+On Windows, using [winget](https://learn.microsoft.com/windows/package-manager/):
 
 ```powershell
 winget install --id Kitware.CMake
@@ -55,38 +55,38 @@ winget install --id LLVM.LLVM
 winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
 ```
 
-Si `bindgen` no encuentra libclang, apúntalo explícitamente:
+If `bindgen` cannot find libclang, point it there explicitly:
 
 ```powershell
 $env:LIBCLANG_PATH = 'C:\Program Files\LLVM\bin'
 ```
 
-> Tras instalar, abre una terminal **nueva** para que tome el PATH actualizado.
+> After installing, open a **new** terminal so it picks up the updated PATH.
 
-## Uso
+## Usage
 
 ```bash
 cargo run
 ```
 
-Genera `out.bmp` y `out.png` en la raíz del proyecto.
+Generates `out.bmp` and `out.png` in the project root.
 
-## Desarrollo por ramas
+## Branch workflow
 
-El laboratorio se construyó de forma incremental, una rama por primitiva:
+The lab was built incrementally, one branch per primitive:
 
 ```
 feature/dots      -> point.rs
 feature/lines     -> line.rs (Bresenham)
 feature/polygons  -> polygon()
 feature/fill      -> fill_polygon() (scanline)
-Polygon-1 .. Polygon-4  -> cada polígono del dibujo
-feature/final     -> los 5 polígonos juntos + export a BMP
+Polygon-1 .. Polygon-4  -> each polygon of the drawing
+feature/final     -> the 5 polygons together + BMP export
 ```
 
-Cada rama entra a `main` mediante un merge; `main` no recibe commits directos.
+Every branch reaches `main` through a merge; `main` never takes direct commits.
 
-## Dependencias
+## Dependencies
 
-- [`raylib`](https://crates.io/crates/raylib) — solo por los tipos `Vector2` y `Color`
-- [`image`](https://crates.io/crates/image) — para el export a PNG
+- [`raylib`](https://crates.io/crates/raylib) — only for the `Vector2` and `Color` types
+- [`image`](https://crates.io/crates/image) — for the PNG export
